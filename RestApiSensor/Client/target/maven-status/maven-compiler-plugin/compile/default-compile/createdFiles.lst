@@ -1,0 +1,4 @@
+dto\MeasurementDTO.class
+dto\SensorDTO.class
+dto\MeasurementsResponse.class
+Client.class
