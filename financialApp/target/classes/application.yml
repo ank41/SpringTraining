@@ -1,0 +1,17 @@
+spring:
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://localhost:5432/leaderIT
+    username: postgres
+    password: "123123"
+  jpa:
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQL95Dialect
+        show_sql: true
+        temp:
+          use_jdbc_metadata_defaults: false
+  liquibase:
+    change-log: classpath:liquibase/db.changelog-master.yaml
+    password: "123123"
+

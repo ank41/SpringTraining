@@ -1,0 +1,293 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author:  kakaulin
+      changes:
+        - createTable:
+            tableName: clients
+            columns:
+              - column:
+                  name: client_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: surname
+                  type: varchar(50)
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: secondname
+                  type: varchar(50)
+                  constraints:
+                    unique: false
+                    nullable: true
+              - column:
+                  name: codeword
+                  type: varchar(100)
+        - createTable:
+            tableName: accounts
+            columns:
+              - column:
+                  name: account_id
+                  type: BIGINT
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: client_id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: false
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(50)
+                  constraints:
+                    unique: true
+                    nullable: false
+              - column:
+                  name: balance
+                  type: real
+              - column:
+                  name: type_account
+                  type: varchar(50)
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: creation_time
+                  type: date
+              - column:
+                  name: validation
+                  type: date
+        - createTable:
+            tableName: transactions
+            columns:
+              - column:
+                  name: transaction_id
+                  type: bigserial
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+                    startWith: 1
+              - column:
+                  name: sum
+                  type: real
+              - column:
+                  name: creation_time
+                  type: date
+              - column:
+                  name: type_transaction
+                  type: varchar(50)
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: result
+                  type: varchar(50)
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: false
+                    nullable: false
+              - column:
+                  name: order_id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: false
+                    nullable: true
+              - column:
+                  name: account_to_id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: false
+                    nullable: true
+        - createTable:
+            tableName: orders
+            columns:
+              - column:
+                  name: order_id
+                  type: bigserial
+                  startWith: 1
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: type_order
+                  type: varchar(50)
+              - column:
+                  name: sum
+                  type: real
+              - column:
+                  name: creation_time
+                  type: date
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: result
+                  type: varchar(50)
+                  constraints:
+                    unique: false
+                    nullable: false
+              - column:
+                  name: account_id
+                  type: BIGINT
+                  constraints:
+                    primaryKey: false
+                    nullable: false
+        - addForeignKeyConstraint:
+              baseColumnNames: client_id
+              baseTableName:  accounts
+              constraintName: fk_client_id
+              referencedColumnNames: client_id
+              referencedTableName: clients
+        - addForeignKeyConstraint:
+            baseColumnNames: account_id
+            baseTableName:  transactions
+            constraintName: fk_account_id
+            referencedColumnNames: account_id
+            referencedTableName: accounts
+        - addForeignKeyConstraint:
+            baseColumnNames: order_id
+            baseTableName:  transactions
+            constraintName: fk_order_id
+            referencedColumnNames: order_id
+            referencedTableName: orders
+        - addForeignKeyConstraint:
+            baseColumnNames: account_to_id
+            baseTableName:  transactions
+            constraintName: fk_orderTo_id
+            referencedColumnNames: account_id
+            referencedTableName: accounts
+        - addForeignKeyConstraint:
+            baseColumnNames: account_id
+            baseTableName:  orders
+            constraintName: fk_account_id
+            referencedColumnNames: account_id
+            referencedTableName: accounts
+  - changeSet:
+      id: 2
+      author: kakaulin
+      changes:
+      - insert:
+          columns:
+              - column:
+                  name: name
+                  value: Иван
+              - column:
+                  name: surname
+                  value: Иванов
+              - column:
+                  name: secondname
+                  value: Иванович
+              - column:
+                  name: codeword
+                  value: 1b20179e145cd23bc7d76fca8e858951e00c9d6abcfe46989a0f26b23fd77c8d07726e8107eb94e1
+          tableName: clients
+      - insert:
+          columns:
+            - column:
+                name: name
+                value: Петр
+            - column:
+                name: surname
+                value: Иванов
+            - column:
+                name: secondname
+                value: Иванович
+            - column:
+                name: codeword
+                value: 1b20179e145cd23bc7d76fca8e858951e00c9d6abcfe46989a0f26b23fd77c8d07726e8107eb94e1
+          tableName: clients
+  - changeSet:
+      id: 3
+      author: kakaulin
+      changes:
+      - insert:
+          columns:
+            - column:
+                name: client_id
+                value: 1
+            - column:
+                name: name
+                value: 4352
+            - column:
+                name: balance
+                value: 111454
+            - column:
+                name: type_account
+                value: базовый
+            - column:
+                name: creation_time
+                value: now()
+            - column:
+                name: validation
+                value: now()
+          tableName: accounts
+      - insert:
+          columns:
+            - column:
+                name: client_id
+                value: 2
+            - column:
+                name: name
+                value: 4353
+            - column:
+                name: balance
+                value: 100.02
+            - column:
+                name: type_account
+                value: базовый
+            - column:
+                name: creation_time
+                value: now()
+            - column:
+                name: validation
+                value: now()
+          tableName: accounts
+      - insert:
+          columns:
+            - column:
+                name: client_id
+                value: 1
+            - column:
+                name: name
+                value: 4351
+            - column:
+                name: balance
+                value: 100.4
+            - column:
+                name: type_account
+                value: базовый
+            - column:
+                name: creation_time
+                value: now()
+            - column:
+                name: validation
+                value: now()
+          tableName: accounts
+
+
+
+
+
+
